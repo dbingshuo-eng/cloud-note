@@ -1,0 +1,19 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/index/index",
+    "pages/upload/upload"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#0B1324",
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "云笺",
+    "backgroundColor": "#0B1324",
+    "backgroundTextStyle": "light"
+  },
+  "usingComponents": {
+    "status-panel": "/components/status-panel/status-panel"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

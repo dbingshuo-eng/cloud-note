@@ -1,0 +1,9 @@
+{
+  "desc": "CloudDisk private mini-program pages",
+  "rules": [
+    {
+      "action": "disallow",
+      "page": "*"
+    }
+  ]
+}

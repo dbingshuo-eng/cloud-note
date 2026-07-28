@@ -1,0 +1,174 @@
+<view class="index-page safe-bottom">
+  <view class="topbar">
+    <view class="brand-block">
+      <text class="eyebrow">CLOUD DISK</text>
+      <text class="page-title">{{recycleMode ? '回收站' : '我的云笺'}}</text>
+      <text class="page-subtitle">{{recycleMode ? '最近删除的项目' : '你的私人文件空间'}}</text>
+    </view>
+    <view class="topbar-actions hero-actions">
+      <button
+        wx:if="{{!recycleMode}}"
+        class="text-button manage-button"
+        bindtap="toggleManageMode"
+      >
+        {{selectMode ? '完成' : '管理'}}
+      </button>
+      <button
+        wx:if="{{recycleMode}}"
+        class="text-button manage-button"
+        bindtap="toggleManageMode"
+      >
+        {{manageMode ? '完成' : '管理'}}
+      </button>
+      <button class="text-button muted-text-button" bindtap="logout" aria-label="退出登录">退出</button>
+    </view>
+  </view>
+
+  <view wx:if="{{!recycleMode}}" class="search-bar">
+    <input
+      class="search-input"
+      value="{{searchKeyword}}"
+      bindinput="onSearchInput"
+      bindconfirm="performSearch"
+      confirm-type="search"
+      placeholder="搜索文件和文件夹"
+      placeholder-class="search-placeholder"
+    />
+    <button wx:if="{{searchKeyword}}" class="clear-search" bindtap="clearSearch">×</button>
+    <button class="search-submit" bindtap="performSearch">搜索</button>
+  </view>
+
+  <scroll-view wx:if="{{!recycleMode && breadcrumbs.length > 0}}" class="breadcrumbs" scroll-x="true" enhanced="true" show-scrollbar="false">
+    <block wx:for="{{breadcrumbs}}" wx:key="id" wx:for-item="crumb" wx:for-index="crumbIndex">
+      <text
+        class="breadcrumb {{crumbIndex === breadcrumbs.length - 1 ? 'current-breadcrumb' : ''}}"
+        data-index="{{crumbIndex}}"
+        bindtap="openBreadcrumb"
+      >{{crumb.name}}</text>
+      <text wx:if="{{crumbIndex < breadcrumbs.length - 1}}" class="breadcrumb-separator">/</text>
+    </block>
+  </scroll-view>
+
+  <view class="workspace-card">
+    <view class="toolbar">
+      <button class="mode-button" bindtap="toggleRecycle">
+        {{recycleMode ? '返回文件' : '回收站'}}
+      </button>
+      <view wx:if="{{!recycleMode}}" class="sort-controls">
+        <button class="sort-button" bindtap="chooseSort">按{{sortLabel}}</button>
+        <button
+          class="order-button"
+          bindtap="toggleSortOrder"
+          aria-label="{{sortOrder === 'asc' ? '当前升序，点击改为降序' : '当前降序，点击改为升序'}}"
+        >
+          {{sortOrder === 'asc' ? '↑' : '↓'}}
+        </button>
+      </view>
+    </view>
+
+    <view wx:if="{{state === 'ready' && files.length > 0}}" class="list-header">
+      <text>名称</text>
+      <text>修改时间</text>
+    </view>
+
+    <status-panel
+      wx:if="{{state !== 'ready'}}"
+      mode="{{state}}"
+      message="{{stateMessage}}"
+      action-text="{{state === 'error' ? '重新加载' : ''}}"
+      bind:action="retryLoad"
+    />
+
+    <view wx:else class="file-list">
+      <view
+        wx:for="{{files}}"
+        wx:key="id"
+        class="file-row {{recycleMode && !manageMode ? 'recycle-file-row' : ''}} {{item.isFolder && !recycleMode ? 'folder-row' : ''}} {{openingId === item.id ? 'folder-opening' : ''}} {{manageMode ? 'manage-file-row' : ''}} {{manageMode && item.selected ? 'selected-file-row' : ''}}"
+        data-item="{{item}}"
+        bindtap="openItem"
+        bindlongpress="openFileActions"
+        hover-class="file-row-pressed"
+        hover-stay-time="140"
+        aria-role="button"
+        aria-label="{{item.fileName}}，{{item.sizeLabel}}"
+      >
+        <button
+          wx:if="{{manageMode}}"
+          class="selection-control {{item.selected ? 'selected' : ''}}"
+          data-id="{{item.id}}"
+          catchtap="toggleRecycleSelection"
+          aria-label="{{item.selected ? '取消选择' : '选择'}}{{item.fileName}}"
+        >
+          {{item.selected ? '✓' : ''}}
+        </button>
+
+        <view class="file-chip {{item.isFolder ? 'folder-chip' : ''}}">
+          <view wx:if="{{item.isFolder}}" class="folder-glyph">
+            <view class="folder-tab"></view>
+          </view>
+          <text wx:else>{{item.typeLabel}}</text>
+        </view>
+        <view class="file-main">
+          <text class="file-name">{{item.fileName}}</text>
+          <text class="file-meta">{{item.sizeLabel}}</text>
+        </view>
+        <text class="file-time">{{item.timeLabel}}</text>
+        <text wx:if="{{item.isFolder && !recycleMode}}" class="folder-arrow">›</text>
+
+        <view wx:if="{{recycleMode && !manageMode}}" class="file-actions">
+            <button
+              class="row-action recover-action"
+              data-id="{{item.id}}"
+              catchtap="recoverItem"
+              loading="{{busyId === item.id}}"
+            >
+              恢复
+            </button>
+            <button
+              class="row-action permanent-action"
+              data-id="{{item.id}}"
+              data-name="{{item.fileName}}"
+              data-folder="{{item.isFolder}}"
+              catchtap="confirmPermanentDelete"
+              loading="{{busyId === item.id}}"
+            >
+              永久删除
+            </button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{recycleMode && manageMode}}" class="dock management-dock">
+    <button class="dock-secondary" bindtap="toggleSelectAllRecycle">
+      {{files.length > 0 && selectedRecycleIds.length === files.length ? '取消全选' : '全选'}}
+    </button>
+    <button
+      class="dock-primary batch-delete-button"
+      disabled="{{selectedRecycleIds.length === 0}}"
+      bindtap="confirmBatchPermanentDelete"
+      loading="{{busyId === 'batch'}}"
+    >
+      删除所选 {{selectedRecycleIds.length}}
+    </button>
+  </view>
+
+  <view wx:if="{{manageMode && !recycleMode}}" class="dock management-dock">
+    <button class="dock-secondary" bindtap="toggleSelectAllActive">
+      {{selectedRecycleIds.length === files.length && files.length > 0 ? '取消全选' : '全选'}}
+    </button>
+    <button
+      class="dock-primary batch-delete-button"
+      disabled="{{selectedRecycleIds.length === 0}}"
+      bindtap="confirmBatchDelete"
+      loading="{{busyId === 'active-batch'}}"
+    >
+      删除所选 {{selectedRecycleIds.length}}
+    </button>
+  </view>
+
+  <view wx:if="{{!recycleMode && !manageMode}}" class="dock">
+    <button class="dock-secondary" bindtap="createFolder"><text class="dock-icon">＋</text>新建文件夹</button>
+    <button class="dock-primary" bindtap="goToUpload"><text class="dock-icon">↑</text>上传文件</button>
+  </view>
+</view>

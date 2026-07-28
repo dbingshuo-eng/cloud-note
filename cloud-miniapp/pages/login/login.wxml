@@ -1,0 +1,27 @@
+<view class="login-page safe-bottom">
+  <view class="archive-mark" aria-hidden="true">
+    <view class="archive-line"></view>
+    <text class="archive-letter">云</text>
+  </view>
+
+  <view class="login-copy">
+    <text class="eyebrow">PRIVATE CLOUD ARCHIVE</text>
+    <text class="title">把重要文件，收进自己的云笺。</text>
+    <text class="description">微信身份验证后即可进入。文件内容只通过你的私有服务传输。</text>
+  </view>
+
+  <view class="login-panel">
+    <text wx:if="{{expired}}" class="notice">登录状态已失效，请重新验证。</text>
+    <text wx:if="{{errorMessage}}" class="error-message">{{errorMessage}}</text>
+    <button
+      class="login-button"
+      loading="{{loading}}"
+      disabled="{{loading}}"
+      bindtap="signIn"
+      aria-label="微信安全登录"
+    >
+      {{loading ? '正在核验…' : '微信安全登录'}}
+    </button>
+    <text class="fine-print">登录即表示允许本小程序获取一次性登录凭证；不会读取聊天内容。</text>
+  </view>
+</view>

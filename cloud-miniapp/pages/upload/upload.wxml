@@ -1,0 +1,59 @@
+<view class="upload-page safe-bottom">
+  <view class="upload-heading">
+    <text class="eyebrow">ADD TO ARCHIVE</text>
+    <text class="title">上传一份文件</text>
+    <text class="subtitle">文件会放入当前目录。单个文件最大 100 MB。</text>
+  </view>
+
+  <view class="upload-card">
+    <view class="card-spine" aria-hidden="true"></view>
+
+    <button
+      class="drop-zone"
+      bindtap="chooseFile"
+      disabled="{{uploading}}"
+      aria-label="{{file ? '重新选择文件' : '从微信会话中选择文件'}}"
+    >
+      <view class="plus-mark">+</view>
+      <text class="drop-title">{{file ? '重新选择文件' : '选择文件'}}</text>
+      <text class="drop-note">从微信会话或设备文件中选取</text>
+    </button>
+
+    <view wx:if="{{file}}" class="selected-file">
+      <view class="selected-file-main">
+        <view class="file-chip">FILE</view>
+        <view class="file-copy">
+          <text class="file-name">{{file.name}}</text>
+          <text class="file-size">{{file.sizeLabel}}</text>
+        </view>
+      </view>
+      <button class="rename-file-button" bindtap="renameSelectedFile" disabled="{{uploading}}">重命名</button>
+    </view>
+
+    <view wx:if="{{uploading || progress > 0}}" class="progress-block" aria-live="polite">
+      <view class="progress-copy">
+        <text>{{uploading ? '正在上传' : '上传完成'}}</text>
+        <text>{{progress}}%</text>
+      </view>
+      <view class="progress-track">
+        <view class="progress-value" style="width: {{progress}}%;"></view>
+      </view>
+    </view>
+
+    <text wx:if="{{errorMessage}}" class="error-message">{{errorMessage}}</text>
+
+    <button
+      class="upload-button"
+      bindtap="uploadFile"
+      disabled="{{!file || uploading}}"
+      loading="{{uploading}}"
+    >
+      {{uploading ? '正在上传…' : '开始上传'}}
+    </button>
+  </view>
+
+  <view class="privacy-note">
+    <text class="privacy-title">传输说明</text>
+    <text class="privacy-copy">文件通过已登录的私有接口直传服务器；小程序不会保存一份额外副本。</text>
+  </view>
+</view>

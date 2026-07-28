@@ -1,0 +1,17 @@
+<view class="state-card" aria-live="polite">
+  <view wx:if="{{mode === 'loading'}}" class="spinner" aria-label="正在加载"></view>
+  <view wx:elif="{{mode === 'error'}}" class="state-mark error-mark">!</view>
+  <view wx:else class="state-mark empty-mark">—</view>
+  <text class="state-title">
+    {{mode === 'loading' ? '正在整理文件' : mode === 'error' ? '没有加载成功' : '这里还是空的'}}
+  </text>
+  <text class="state-message">{{message}}</text>
+  <button
+    wx:if="{{actionText}}"
+    class="state-action"
+    bindtap="onAction"
+    aria-label="{{actionText}}"
+  >
+    {{actionText}}
+  </button>
+</view>

@@ -1,0 +1,113 @@
+.login-page {
+  min-height: 100vh;
+  padding: 92rpx 44rpx 54rpx;
+  background: #f5f5f7;
+  color: #1d1d1f;
+}
+
+.archive-mark {
+  width: 92rpx;
+  height: 92rpx;
+  border-radius: 24rpx;
+  background: #1d1d1f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 16rpx 34rpx rgba(29, 29, 31, 0.14);
+}
+
+.archive-line {
+  display: none;
+}
+
+.archive-letter {
+  margin: 0;
+  color: #ffffff;
+  font-family: "STSong", "Songti SC", serif;
+  font-size: 46rpx;
+  font-weight: 700;
+}
+
+.login-copy {
+  margin-top: 72rpx;
+}
+
+.eyebrow {
+  display: block;
+  color: #86868b;
+  font-size: 20rpx;
+  font-weight: 700;
+  letter-spacing: 3rpx;
+}
+
+.title {
+  display: block;
+  max-width: 610rpx;
+  margin-top: 22rpx;
+  color: #1d1d1f;
+  font-family: "STSong", "Songti SC", serif;
+  font-size: 58rpx;
+  font-weight: 700;
+  line-height: 1.28;
+}
+
+.description {
+  display: block;
+  max-width: 580rpx;
+  margin-top: 24rpx;
+  color: #6e6e73;
+  font-size: 27rpx;
+  line-height: 1.7;
+}
+
+.login-panel {
+  margin-top: 72rpx;
+  padding: 28rpx;
+  border-radius: 24rpx;
+  background: #ffffff;
+  box-shadow: 0 14rpx 40rpx rgba(29, 29, 31, 0.08);
+}
+
+.notice,
+.error-message {
+  display: block;
+  margin-bottom: 18rpx;
+  padding: 18rpx 20rpx;
+  border-radius: 14rpx;
+  font-size: 24rpx;
+  line-height: 1.45;
+}
+
+.notice {
+  background: #fff4df;
+  color: #9a5b00;
+}
+
+.error-message {
+  background: #fff0f0;
+  color: #b42318;
+}
+
+.login-button {
+  width: 100%;
+  min-height: 96rpx;
+  border-radius: 18rpx;
+  background: #ff9500;
+  color: #ffffff;
+  font-size: 29rpx;
+  font-weight: 700;
+  line-height: 96rpx;
+}
+
+.login-button[disabled] {
+  opacity: 0.62;
+}
+
+.fine-print {
+  display: block;
+  margin-top: 20rpx;
+  color: #86868b;
+  font-size: 21rpx;
+  line-height: 1.55;
+  text-align: center;
+}
