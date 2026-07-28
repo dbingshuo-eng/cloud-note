@@ -1,0 +1,22 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Maven / Java
+cloud-server/target/
+*.class
+*.log
+
+# 本地敏感配置
+.env
+.env.*
+*.local.*
+cloud-server/src/main/resources/application-local.yml
+
+# 微信开发者工具本地配置
+cloud-miniapp/project.private.config.json
+cloud-miniapp/utils/config.local.js
+
+# Windows / macOS
+Thumbs.db
+.DS_Store
