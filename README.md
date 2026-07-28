@@ -8,9 +8,11 @@
 
 ## 项目预览
 
-> 可在 `docs/images/` 中放入项目截图后，取消下面图片链接的注释。
+![文件列表](docs/images/file-list.jpg)
 
-<!-- ![文件列表](docs/images/file-list.png) ![上传文件](docs/images/upload.png) ![回收站](docs/images/recycle-bin.png) -->
+![上传文件](docs/images/upload.jpg)
+
+![回收站](docs/images/recycle-bin.jpg)
 
 ## 功能
 
